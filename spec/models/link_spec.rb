@@ -7,7 +7,7 @@ describe Link do
   end
 
   describe "associations" do
-
+    it { should have_one :analytic }
   end
 
   describe "validations" do

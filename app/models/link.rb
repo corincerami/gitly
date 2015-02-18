@@ -1,6 +1,10 @@
 class Link < ActiveRecord::Base
+  has_one :analytic
+
   validates :long_url, presence: true, uniqueness: true
   validates :short_url, presence: true, uniqueness: true
+
+  after_create :start_analyzing
 
   def shorten
     # created a random 6 character string
@@ -20,5 +24,9 @@ class Link < ActiveRecord::Base
     else
       self.short_url = path
     end
+  end
+
+  def start_analyzing
+    Analytic.create(link: self)
   end
 end
