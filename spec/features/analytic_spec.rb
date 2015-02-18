@@ -4,7 +4,8 @@ feature "View analytics" do
   before(:each) do
     @link = FactoryGirl.create(:link)
     @analytics = @link.analytic
-    visit analytic_path(@analytics)
+    visit link_path(@link)
+    click_on "View Analytics"
   end
 
   it "should display correct analytics" do
