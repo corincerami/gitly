@@ -1,6 +1,10 @@
 class Link < ActiveRecord::Base
+  has_one :analytic
+
   validates :long_url, presence: true, uniqueness: true
   validates :short_url, presence: true, uniqueness: true
+
+  after_create :start_analyzing
 
   def shorten
     # created a random 6 character string
@@ -19,6 +23,18 @@ class Link < ActiveRecord::Base
       self.shorten
     else
       self.short_url = path
+    end
+  end
+
+  def start_analyzing
+    Analytic.create(link: self)
+  end
+
+  def track_visits(request)
+    analytic.increment!(:visits, by = 1)
+    if !analytic.unique_visitors.any? { |uv| uv.visitor_ip == request.ip }
+      analytic.unique_visitors.create(visitor_ip: request.ip)
+      analytic.increment!(:unique_visits, by = 1)
     end
   end
 end

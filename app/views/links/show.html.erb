@@ -4,3 +4,6 @@
 <div>
   The URL it points to is: <%= @link.long_url %>
 </div>
+<div>
+  <%= link_to "View Analytics", analytic_path(@link.analytic) %>
+</div>

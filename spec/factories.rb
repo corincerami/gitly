@@ -5,4 +5,10 @@ FactoryGirl.define do
       link.shorten
     end
   end
+
+  factory :analytic do
+    visits 1000
+    unique_visits 250
+    link
+  end
 end
