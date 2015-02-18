@@ -8,6 +8,7 @@ describe Analytic do
 
   describe "associations" do
     it { should belong_to :link }
+    it { should have_many :unique_visitors }
   end
 
   describe "validations" do

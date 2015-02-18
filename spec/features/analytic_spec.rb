@@ -19,4 +19,13 @@ feature "View analytics" do
 
     expect(page).to have_content "Total visits: #{v + 1}"
   end
+
+  it "should increment unique visits correctly" do
+    uv = @analytics.unique_visits
+    visit "/#{@link.short_url}"
+    visit "/#{@link.short_url}"
+    visit analytic_path(@analytics)
+
+    expect(page).to have_content "Unique visits: #{uv + 1}"
+  end
 end
