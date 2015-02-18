@@ -29,4 +29,12 @@ class Link < ActiveRecord::Base
   def start_analyzing
     Analytic.create(link: self)
   end
+
+  def track_visits(request)
+    analytic.increment!(:visits, by = 1)
+    if !analytic.unique_visitors.any? { |uv| uv.visitor_ip == request.ip }
+      analytic.unique_visitors.create(visitor_ip: request.ip)
+      analytic.increment!(:unique_visits, by = 1)
+    end
+  end
 end

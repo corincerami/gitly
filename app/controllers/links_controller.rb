@@ -21,11 +21,7 @@ class LinksController < ApplicationController
   def redirect
     link = Link.find_by(short_url: params[:short_url])
     if link
-      link.analytic.increment!(:visits, by = 1)
-      if !link.analytic.unique_visitors.any? { |uv| uv.visitor_ip == request.ip }
-        link.analytic.unique_visitors.create(visitor_ip: request.ip)
-        link.analytic.increment!(:unique_visits, by = 1)
-      end
+      link.track_visits(request)
       redirect_to link.long_url
     else
       flash[:error] = "Couldn't find that link"
