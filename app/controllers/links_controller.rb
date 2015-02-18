@@ -18,6 +18,16 @@ class LinksController < ApplicationController
     @link = Link.find(params[:id])
   end
 
+  def redirect
+    link = Link.find_by(short_url: params[:short_url])
+    if link
+      redirect_to link.long_url
+    else
+      flash[:error] = "Couldn't find that link"
+      redirect_to :root
+    end
+  end
+
   private
 
   def link_params
