@@ -1,6 +1,6 @@
 class Link < ActiveRecord::Base
-  validates :long_url, presence: true
-  validates :short_url, presence: true
+  validates :long_url, presence: true, uniqueness: true
+  validates :short_url, presence: true, uniqueness: true
 
   def shorten
     # created a random 6 character string
@@ -14,9 +14,7 @@ class Link < ActiveRecord::Base
                   "X", "Y", "Z", "1", "2", "3", "4",
                   "5", "6", "7", "8", "9", "0"]
     path = ""
-    6.times do
-      path << characters[rand(61)]
-    end
+    6.times { path << characters[rand(61)] }
     if Link.all.select { |l| l.short_url == path }.any?
       self.shorten
     else
