@@ -8,7 +8,6 @@ describe LinksController do
     end
 
     it "redirects to the correct location" do
-      binding.pry
       expect(response).to redirect_to(@link.long_url)
     end
   end
