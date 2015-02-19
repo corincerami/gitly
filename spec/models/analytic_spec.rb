@@ -17,4 +17,62 @@ describe Analytic do
     it { should validate_numericality_of :visits }
     it { should validate_numericality_of :unique_visits }
   end
+
+  describe "most_common_browser" do
+    before(:each) do
+      @analytic = FactoryGirl.create(:analytic)
+      @analytic.unique_visitors.create(visitor_ip: "0.0.0.0",
+                                      browser: "Chrome")
+      @analytic.unique_visitors.create(visitor_ip: "0.0.0.0",
+                                      browser: "Firefox")
+    end
+
+    it "should return most commonly used browser" do
+      @analytic.unique_visitors.create(visitor_ip: "0.0.0.0",
+                                      browser: "Chrome")
+      browser = @analytic.most_common_browser
+      expect(browser).to eq("Chrome")
+    end
+
+    it "should work with a tie" do
+      browser = @analytic.most_common_browser
+      expect(browser).to eq("Chrome" || "Firefox")
+    end
+
+    it "should return nil when no visitors yet" do
+      analytic = FactoryGirl.create(:analytic)
+      browser = analytic.most_common_browser
+
+      expect(browser).to eq(nil)
+    end
+  end
+
+  describe "most_common_platform" do
+    before(:each) do
+      @analytic = FactoryGirl.create(:analytic)
+      @analytic.unique_visitors.create(visitor_ip: "0.0.0.0",
+                                      platform: "Windows")
+      @analytic.unique_visitors.create(visitor_ip: "0.0.0.0",
+                                      browser: "Mac")
+    end
+
+    it "should return most commonly used platform" do
+      @analytic.unique_visitors.create(visitor_ip: "0.0.0.0",
+                                      platform: "Windows")
+      platform = @analytic.most_common_platform
+      expect(platform).to eq("Windows")
+    end
+
+    it "should work with a tie" do
+      platform = @analytic.most_common_platform
+      expect(platform).to eq("Windows" || "Mac")
+    end
+
+    it "should return nil when no visitors yet" do
+      analytic = FactoryGirl.create(:analytic)
+      platform = analytic.most_common_platform
+
+      expect(platform).to eq(nil)
+    end
+  end
 end

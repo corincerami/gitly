@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :link do
-    long_url "http://www.google.com"
+    sequence(:long_url) { |n| "http://www.google#{n}.com" }
     after(:build) do |link|
       link.shorten
     end
