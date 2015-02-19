@@ -1,0 +1,3 @@
+language: ruby
+before_script:
+  - psql -c 'create database gitly_test;' -U postgres
