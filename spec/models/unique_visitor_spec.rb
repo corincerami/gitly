@@ -4,6 +4,9 @@ describe UniqueVisitor do
   describe "attributes" do
     it { should respond_to :visitor_ip }
     it { should respond_to :analytic_id }
+    it { should respond_to :browser }
+    it { should respond_to :browser_version }
+    it { should respond_to :platform }
   end
 
   describe "validations" do
