@@ -33,7 +33,11 @@ class Link < ActiveRecord::Base
   def track_visits(request)
     analytic.increment!(:visits, by = 1)
     if !analytic.unique_visitors.any? { |uv| uv.visitor_ip == request.ip }
-      analytic.unique_visitors.create(visitor_ip: request.ip)
+      browser = Browser.new(ua: request.env["HTTP_USER_AGENT"])
+      analytic.unique_visitors.create(visitor_ip: request.ip,
+                                      browser: browser.name,
+                                      browser_version: browser.version,
+                                      platform: browser.platform.capitalize)
       analytic.increment!(:unique_visits, by = 1)
     end
   end
