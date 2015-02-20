@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :links, only: [:new, :create, :show]
+  resources :links, only: [:show, :index, :new, :create]
   resources :analytics, only: [:show]
 
   root to: "links#new"
