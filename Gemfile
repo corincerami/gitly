@@ -18,7 +18,6 @@ gem 'jquery-rails'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'browser'
-gem 'coveralls', require: false
 
 group :development, :test do
   gem 'rspec-rails'
