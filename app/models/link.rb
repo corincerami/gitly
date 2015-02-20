@@ -41,4 +41,12 @@ class Link < ActiveRecord::Base
       analytic.increment!(:unique_visits, by = 1)
     end
   end
+
+  def self.most_popular
+    joins(:analytic).order("analytics.visits").first(5)
+  end
+
+  def self.most_recent
+    order("created_at DESC").first(5)
+  end
 end
