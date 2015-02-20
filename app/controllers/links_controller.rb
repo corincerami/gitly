@@ -30,7 +30,7 @@ class LinksController < ApplicationController
       redirect_to link.long_url
     else
       flash[:error] = "Couldn't find that link"
-      redirect_to :root
+      render :new
     end
   end
 
