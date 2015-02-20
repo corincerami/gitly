@@ -1,0 +1,8 @@
+<div class="most-popular">
+  <h3>Most Visited Links</h3>
+  <% @popular_links.each do |pop_link| %>
+    <div>
+      <%= pop_link.short_url %> | <%= pop_link.long_url %>
+    </div>
+  <% end %>
+</div>

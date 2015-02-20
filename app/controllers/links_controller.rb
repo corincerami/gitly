@@ -1,4 +1,12 @@
 class LinksController < ApplicationController
+  def show
+    @link = Link.find(params[:id])
+  end
+
+  def index
+    @popular_links = Link.most_popular
+  end
+
   def new
     @link = Link.new
   end
@@ -12,10 +20,6 @@ class LinksController < ApplicationController
     else
       render :new
     end
-  end
-
-  def show
-    @link = Link.find(params[:id])
   end
 
   def redirect
