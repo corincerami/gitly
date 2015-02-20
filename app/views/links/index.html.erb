@@ -6,3 +6,12 @@
     </div>
   <% end %>
 </div>
+
+<div class="most-recent">
+  <h3>Most Recent Links</h3>
+  <% @recent_links.each do |recent_link| %>
+    <div>
+      <%= recent_link.short_url %> | <%= recent_link.long_url %>
+    </div>
+  <% end %>
+</div>

@@ -5,6 +5,7 @@ class LinksController < ApplicationController
 
   def index
     @popular_links = Link.most_popular
+    @recent_links = Link.most_recent
   end
 
   def new

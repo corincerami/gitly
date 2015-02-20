@@ -35,13 +35,34 @@ feature "Shortening links" do
 
     visit links_path
 
-    expect(page).to have_content "Most Visited Links"
-    pop_links.each do |link|
-      expect(page).to have_content link.short_url
-    end
+    within('.most-popular') do
+      expect(page).to have_content "Most Visited Links"
+      pop_links.each do |link|
+        expect(page).to have_content link.short_url
+      end
 
-    unpop_links.each do |link|
-      expect(page).not_to have_content link.short_url
+      unpop_links.each do |link|
+        expect(page).not_to have_content link.short_url
+      end
+    end
+  end
+
+  it "index show most recent links" do
+    recent_links = FactoryGirl.create_list(:link, 5)
+
+    old_links = FactoryGirl.create_list(:link, 5, created_at: 1.day.ago)
+
+    visit links_path
+
+    within('.most-recent') do
+      expect(page).to have_content "Most Recent Links"
+      recent_links.each do |link|
+        expect(page).to have_content link.short_url
+      end
+
+      old_links.each do |link|
+        expect(page).not_to have_content link.short_url
+      end
     end
   end
 end
