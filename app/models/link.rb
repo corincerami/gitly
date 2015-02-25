@@ -1,4 +1,5 @@
 class Link < ActiveRecord::Base
+  include Geokit::Geocoders
   has_one :analytic
 
   validates :long_url, presence: true, uniqueness: true
@@ -34,10 +35,12 @@ class Link < ActiveRecord::Base
     analytic.increment!(:visits, by = 1)
     if !analytic.unique_visitors.any? { |uv| uv.visitor_ip == request.ip }
       browser = Browser.new(ua: request.env["HTTP_USER_AGENT"])
+      country = location_from_ip(request.ip)
       analytic.unique_visitors.create(visitor_ip: request.ip,
                                       browser: browser.name,
                                       browser_version: browser.version,
-                                      platform: browser.platform.capitalize)
+                                      platform: browser.platform.capitalize,
+                                      country: country)
       analytic.increment!(:unique_visits, by = 1)
     end
   end
@@ -48,5 +51,12 @@ class Link < ActiveRecord::Base
 
   def self.most_recent
     order("created_at DESC").first(5)
+  end
+
+  private
+
+  def location_from_ip(ip)
+    location = IpGeocoder.geocode(ip)
+    location.country_code
   end
 end
